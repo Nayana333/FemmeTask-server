@@ -5,11 +5,18 @@ interface JwtPayload {
   id: string;
 }
 
-export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+declare module "express-serve-static-core" {
+  interface Request {
+    userId?: string;
+  }
+}
+
+export const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
   const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
-    return res.status(401).json({ error: "Unauthorized: No token provided" });
+    res.status(401).json({ error: "Unauthorized: No token provided" });
+    return;
   }
 
   try {
@@ -17,6 +24,6 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
     req.userId = decoded.id; 
     next();
   } catch (error) {
-    return res.status(403).json({ error: "Invalid or expired token" });
+    res.status(403).json({ error: "Invalid or expired token" });
   }
 };
