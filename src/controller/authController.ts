@@ -11,7 +11,7 @@ dotenv.config();
 
 
 const generateAccessToken = (userId: string): string => {
-  return jwt.sign({ id: userId }, process.env.JWT_SECRET as string, { expiresIn: "1h" });
+  return jwt.sign({ id: userId }, process.env.JWT_SECRET as string, { expiresIn: "1d" });
 };
 
 export const generateRefreshToken = (userId: string): string => {
@@ -27,35 +27,6 @@ export const generateRefreshToken = (userId: string): string => {
 
 let refreshTokens: string[] = [];
 
-// export const registerUser = async (req: Request, res: Response): Promise<void> => {
-//   console.log("Registration Request Received:", req.body);
-  
-//   try {
-//     const { userName, email, password } = req.body;
-
-//     const existingUser = await Users.findOne({ email });
-//     if (existingUser) {      
-//       console.log("⚠️ User already exists:", email);
-//       res.status(400).json({ message: "User already exists" });
-//       return;
-//     }
-
-//     const salt = await bcrypt.genSalt(10);
-//     const hashedPassword = await bcrypt.hash(password, salt);
-
-//     await Users.create({
-//       userName,
-//       email,
-//       password: hashedPassword,
-//     });
-
-//     console.log("User registered successfully:", email);
-//     res.status(201).json({ message: "please confirm your OTP" });
-//   } catch (error) {
-//     console.error("Registration Error:", error);
-//     res.status(500).json({ message: "User registration failed" }); 
-//   }
-// };
 
 
 

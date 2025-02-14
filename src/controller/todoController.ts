@@ -131,24 +131,29 @@ export const deleteTodo = async (req: Request, res: Response): Promise<void> => 
 };
   
 
-// export const toggleTodoCompletion = async (req: Request, res: Response): Promise<void> => {
-//   try {
-//     const { id } = req.params;
+export const toggleTodoCompletion = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const todoId = req.params.todoId.trim(); 
+    console.log("Reached backend with ID:", todoId); 
 
-//     const todo = await Todo.findOne({ _id: id, user: req.userId });
+    const todo = await Todo.findOne({ _id: todoId });
+    console.log(todo);
+    
 
-//     if (!todo) {
-//       res.status(404).json({ error: "Todo not found or unauthorized" });
-//       return;
-//     }
+    if (!todo) {
+      res.status(404).json({ error: "Todo not found or unauthorized" });
+      return;
+    }
 
-//     todo.completed = !todo.completed; 
-//     await todo.save();
+    todo.completed = !todo.completed;
+    await todo.save();
 
-//     res.json({ message: `Todo marked as ${todo.completed ? "completed" : "incomplete"}`, todo });
-//   } catch (error) {
-//     console.log(error);
+    const todos = await Todo.find({ user: todo.user });
 
-//     res.status(500).json({ error: "Failed to update todo status" });
-//   }
-// };
+    res.status(200).json({ message: `Todo marked as ${todo.completed ? "completed" : "incomplete"}`, todos });
+  } catch (error) {
+    console.log("Error updating todo:", error);
+    res.status(500).json({ error: "Failed to update todo status" });
+  }
+};
+
