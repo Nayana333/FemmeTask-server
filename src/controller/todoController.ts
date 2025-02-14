@@ -44,15 +44,6 @@ const todos = await Todo.find({
   }
 };
 
-// export const getAllTodos = async (req: Request, res: Response): Promise<void> => {
-//   try {
-//     const userId = req.userId;
-//     const todos = await Todo.find({ user: userId });
-//     res.json(todos);
-//   } catch (error) {
-//     res.status(500).json({ error: "Failed to fetch todos" });
-//   }
-// };
 
 export const getTodoById = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -77,33 +68,45 @@ export const getTodoById = async (req: Request, res: Response): Promise<void> =>
     }
   };
 
-//   export const updateTodo = async (req: Request, res: Response): Promise<void> => {
-//     try {
-//       const id = req.params.id.trim(); 
-//       const { title, description, completed } = req.body;
-  
-//       if (!mongoose.Types.ObjectId.isValid(id)) {
-//         res.status(400).json({ error: "Invalid Todo ID" });
-//         return;
-//       }
-  
-//       const updatedTodo = await Todo.findOneAndUpdate(
-//         { _id: id, user: req.userId },
-//         { title, description, completed },
-//         { new: true }
-//       );
-  
-//       if (!updatedTodo) {
-//         res.status(404).json({ error: "Todo not found or unauthorized" });
-//         return;
-//       }
-  
-//       res.json({ message: "Todo updated successfully", todo: updatedTodo });
-//     } catch (error) {
-//       console.error("Error updating todo:", error);
-//       res.status(500).json({ error: "Failed to update todo" });
-//     }
-//   };
+
+
+export const updateTodo = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id = req.params.todoId.trim();
+    const { title } = req.body;
+    console.log('reached at update');
+    
+
+    if (!title) {
+      res.status(400).json({ error: "Title is required" });
+      return;
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      res.status(400).json({ error: "Invalid Todo ID" });
+      return;
+    }
+
+    const updatedTodo = await Todo.findByIdAndUpdate(
+      id,
+      { title },
+      { new: true } 
+    );
+
+    if (!updatedTodo) {
+      res.status(404).json({ error: "Todo not found" });
+      return;
+    }
+
+    const todo=await Todo.find({})
+
+    res.json({ message: "Todo updated successfully", todo: todo });
+  } catch (error) {
+    console.error("Error updating todo:", error);
+    res.status(500).json({ error: "Failed to update todo" });
+  }
+};
+
 
 export const deleteTodo = async (req: Request, res: Response): Promise<void> => {
   try {
