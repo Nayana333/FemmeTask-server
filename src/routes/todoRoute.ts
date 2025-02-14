@@ -1,21 +1,21 @@
 import express from "express";
 import { authMiddleware } from "../middleware/authMiddleware";
 import {
-  createTodo,
-  getAllTodos,
+   createTodo,
+  // getAllTodos,
   getTodoById,
-  updateTodo,
+  // updateTodo,
   deleteTodo,
-  toggleTodoCompletion,
+  // toggleTodoCompletion,
 } from "../controller/todoController";
 
 const router = express.Router();
 
-router.post("/createTodo", authMiddleware, createTodo); 
-router.get("/getAllTodo", authMiddleware, getAllTodos); 
-router.get("/getTodo/:id", authMiddleware, getTodoById); 
-router.put("/updateTodo/:id", authMiddleware, updateTodo); 
-router.delete("/deleteTodo/:id", authMiddleware, deleteTodo); 
-router.patch("completedTodo/:id/complete", authMiddleware, toggleTodoCompletion); 
+router.post("/addTodo",authMiddleware,createTodo); 
+// router.get("/getAllTodo", authMiddleware, getAllTodos); 
+router.get("/getTodo/:userId", authMiddleware, getTodoById); 
+// router.put("/updateTodo/:id", authMiddleware, updateTodo); 
+router.delete("/deleteTodo/:id", deleteTodo); 
+// router.patch("completedTodo/:id/complete", authMiddleware, toggleTodoCompletion); 
 
 export default router;
