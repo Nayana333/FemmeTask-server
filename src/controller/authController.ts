@@ -11,7 +11,7 @@ dotenv.config();
 
 
 const generateAccessToken = (userId: string): string => {
-  return jwt.sign({ id: userId }, process.env.JWT_SECRET as string, { expiresIn: "24h" });
+  return jwt.sign({ id: userId }, process.env.JWT_SECRET as string, { expiresIn: "3d" });
 };
 
 
@@ -139,7 +139,7 @@ export const verifyOTP = asyncHandler(async (req: Request, res: Response,) => {
 
     const otpGeneratedTime = otpRecord.createdAt.getTime();
     const currentTime = Date.now();
-    const expiryTime = 2 * 60 * 1000; // 5 minutes
+    const expiryTime = 2 * 60 * 1000; 
 
     if (currentTime - otpGeneratedTime > expiryTime) {
       console.log("Error: OTP expired");

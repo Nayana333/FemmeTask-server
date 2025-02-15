@@ -1,13 +1,13 @@
 
-import { Request as ExpressRequest, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-interface AuthenticatedRequest extends ExpressRequest {
+interface AuthenticatedRequest extends Request {
   user?: { id: string };
 }
 
 export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
-  const token = req.cookies?.accessToken;
+  const token = req.headers.authorization;
 
   if (!token) {
      res.status(401).json({ error: "Unauthorized: No token provided" });

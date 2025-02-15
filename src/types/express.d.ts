@@ -5,3 +5,8 @@ declare module "express-serve-static-core" {
     userId?: string;
   }
 }
+
+
+// export interface CustomRequest extends Request {
+// userId?:string;
+//}
