@@ -21,10 +21,11 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-  origin: "http://localhost:5173",
-  methods: "GET,POST,PUT,DELETE,PATCH",
-  credentials: true 
+  origin: ["https://femme-task-client.vercel.app", "http://localhost:5173"],
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  credentials: true
 }));
+
 
 app.use("/api/auth", authRoutes);
 app.use("/api/todos", todoRoutes);
