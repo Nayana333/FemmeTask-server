@@ -98,7 +98,7 @@ export const updateTodo = async (req: Request, res: Response): Promise<void> => 
       return;
     }
 
-    const todo=await Todo.find({})
+    const todo=await Todo.find({ user: updatedTodo.user })
 
     res.json({ message: "Todo updated successfully", todo: todo });
   } catch (error) {
