@@ -7,7 +7,11 @@ interface AuthenticatedRequest extends Request {
 }
 
 export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
-  const token = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
+  console.log(token);
+  console.log('req.headers.authorization',req.headers.authorization);
+  
+  
 
   if (!token) {
      res.status(401).json({ error: "Unauthorized: No token provided" });
@@ -19,6 +23,8 @@ export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: N
     req.user = decoded;
     next();
   } catch (error: any) {
+    console.log(error);
+    
     if (error.name === "TokenExpiredError") {
       res.status(403).json({ error: "TokenExpired" }); // Specific response for expired token
       return 
