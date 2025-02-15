@@ -12,7 +12,4 @@ router.post("/login", loginUser);
 router.post("/logout", logoutUser);
 router.post('/verifyOTP',verifyOTP)
 router.post('/resendOtp',resendOtp)
-
-
-
 export default router;

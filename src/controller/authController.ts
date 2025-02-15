@@ -11,23 +11,8 @@ dotenv.config();
 
 
 const generateAccessToken = (userId: string): string => {
-  return jwt.sign({ id: userId }, process.env.JWT_SECRET as string, { expiresIn: "1d" });
+  return jwt.sign({ id: userId }, process.env.JWT_SECRET as string, { expiresIn: "24h" });
 };
-
-export const generateRefreshToken = (userId: string): string => {
-    if (!process.env.JWT_SECRET) {
-      throw new Error("JWT_SECRET is not defined");
-    }
-  
-    return jwt.sign({ userId }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
-  };
-  
-
-let refreshTokens: string[] = [];
-
-
 
 
 export const registerUser = async (req: Request, res: Response): Promise<void> => {
@@ -54,7 +39,6 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
       isVerified: false, 
     });
 
-    //  Generate a 4-digit OTP
     const otp = Math.floor(1000 + Math.random() * 9000).toString();
     console.log("Generated OTP:", otp);
 
@@ -100,10 +84,11 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       httpOnly: true, 
       secure: process.env.NODE_ENV === "production", 
       sameSite: "strict", 
-      maxAge: 60 * 60 * 1000, 
+      maxAge:     3 * 24 * 60 * 60 * 1000
+
+
     });
-
-
+    
         const todos = await Todo.find({ user: user });
     
 
@@ -225,6 +210,5 @@ export const resendOtp = asyncHandler(async (req: Request, res: Response) => {
 
 export const logoutUser = async (req: Request, res: Response): Promise<void> => {
   const { token } = req.body;
-  refreshTokens = refreshTokens.filter((t) => t !== token);
   res.json({ message: "Logged out successfully" });
 };
